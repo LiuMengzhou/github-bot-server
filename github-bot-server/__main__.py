@@ -16,13 +16,14 @@ user = "MIoTBot"
 secret = "dHMgaXMgYSBwaXR5"
 # 机器人的 github personal token
 oauth_token = base64.b64decode(
-    "YWE5ZGNmMGYzMWQ2ZDI5NzZiNmMzMjQwMGIzMWFjNzk4YjY0MzEyNg==").decode('utf-8')
+    "YWE5ZGNmMGYzMWQ2ZDI5NzZiNmMzMjQwMGIzMWFjNzk4YjY0MzEyNg==").decode("utf-8")
 
 # 开发者新建 issue
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
 
-    url = event.data["issue"]["comments_url"]
+    url = event.data["issue"]["url"]
+    comments_url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
     title = event.data["issue"]["title"]
     body = event.data["issue"]["body"]
@@ -33,9 +34,11 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
     if isIssueTemplateMatched:
         message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
+        await gh.post(comments_url, data={"body": message})
     else:
-        message = f"@{author} 感谢您提出宝贵的 issue，但好像您并没有按照模板提出 issue，我们会降低此 issue 的优先级！"
-    await gh.post(url, data={"body": message})
+        message = f"@{author} 感谢您提出宝贵的 issue\n但好像您并没有按照模板提出 issue，希望您能填写所有的必填项\n该 issue 将被 close！"
+        await gh.post(comments_url, data={"body": message})
+        await gh.patch(url, data={"state": "closed"})
 
 
 @routes.post("/")
