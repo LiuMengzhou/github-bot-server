@@ -10,12 +10,7 @@ routes = web.RouteTableDef()
 router = routing.Router()
 
 # 机器人的 github username
-user = "LiuMengzhou"
-# 机器人的 github personal token
-oauth_token = "adb83ca50141f59de092eb87ab53a02a51502c36"
-# miot-plugin-sdk repo webhooks secret
-secret = "dHMgaXMgYSBwaXR5"
-
+user = "MIoTBot"
 
 # 开发者新建 issue
 @router.register("issues", action="opened")
@@ -42,6 +37,12 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 @routes.post("/")
 async def main(request):
     body = await request.read()
+
+    # miot-plugin-sdk repo webhooks secret
+    secret = os.environ.get("GH_SECRET")
+    # 机器人的 github personal token
+    oauth_token = os.environ.get("GH_AUTH")
+
     event = sansio.Event.from_http(request.headers, body, secret=secret)
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, user,
