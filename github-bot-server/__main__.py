@@ -1,3 +1,4 @@
+import base64
 import os
 
 import aiohttp
@@ -38,9 +39,10 @@ async def main(request):
     body = await request.read()
 
     # miot-plugin-sdk repo webhooks secret
-    secret = os.environ.get("GH_SECRET")
+    secret = "dHMgaXMgYSBwaXR5"
     # 机器人的 github personal token
-    oauth_token = os.environ.get("GH_AUTH")
+    oauth_token = base64.decodestring(
+        "YzgxYTIxZTY4NjY2MjdiNmYwMTRmNzgzYjhhZDMyOWQwZDRiZmNlYg==")
 
     print(secret)
     print(oauth_token)
