@@ -41,8 +41,8 @@ async def main(request):
     # miot-plugin-sdk repo webhooks secret
     secret = "dHMgaXMgYSBwaXR5"
     # 机器人的 github personal token
-    oauth_token = base64.decodestring(
-        "YzgxYTIxZTY4NjY2MjdiNmYwMTRmNzgzYjhhZDMyOWQwZDRiZmNlYg==")
+    oauth_token = base64.b64decode(
+        "YzgxYTIxZTY4NjY2MjdiNmYwMTRmNzgzYjhhZDMyOWQwZDRiZmNlYg==").decode('utf-8')
 
     print(secret)
     print(oauth_token)
