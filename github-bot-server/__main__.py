@@ -42,6 +42,9 @@ async def main(request):
     # 机器人的 github personal token
     oauth_token = os.environ.get("GH_AUTH")
 
+    print(secret)
+    print(oauth_token)
+
     event = sansio.Event.from_http(request.headers, body, secret=secret)
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, user,
