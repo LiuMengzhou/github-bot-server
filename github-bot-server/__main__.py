@@ -10,14 +10,12 @@ routes = web.RouteTableDef()
 router = routing.Router()
 
 # 机器人的 github username
-user = "MIoTBot"
+user = "LiuMengzhou"
 
 # 开发者新建 issue
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
-    """
-    Whenever an issue is opened, greet the author and say thanks.
-    """
+
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
     title = event.data["issue"]["title"]
