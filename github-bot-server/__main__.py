@@ -9,9 +9,15 @@ routes = web.RouteTableDef()
 
 router = routing.Router()
 
+# 机器人的 github username
 user = "LiuMengzhou"
+# 机器人的 github personal token
+oauth_token = "adb83ca50141f59de092eb87ab53a02a51502c36"
+# miot-plugin-sdk repo webhooks secret
+secret = "dHMgaXMgYSBwaXR5"
 
 
+# 开发者新建 issue
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
     """
@@ -22,6 +28,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     title = event.data["issue"]["title"]
     body = event.data["issue"]["body"]
 
+    # 是不是按照模板提 issue
     isIssueTemplateMatched = body.find(
         "是否为新品") != -1 and body.find("填 新品 or 在售") == -1
 
@@ -35,10 +42,6 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 @routes.post("/")
 async def main(request):
     body = await request.read()
-
-    secret = os.environ.get("GH_SECRET")
-    oauth_token = os.environ.get("GH_AUTH")
-
     event = sansio.Event.from_http(request.headers, body, secret=secret)
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, user,
