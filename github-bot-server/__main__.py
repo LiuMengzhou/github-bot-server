@@ -45,7 +45,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
         message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
         await gh.post(comments_url, data={"body": message})
     else:
-        message = f"@{author} 感谢您提出宝贵的 issue\n但好像您并没有按照模板提出 issue，希望您能填写所有的必填项\n如果不修改，我们会降低此 issue 的优先级！"
+        message = f"@{author} 感谢您提出宝贵的 issue\n但好像您并没有按照模板提出 issue，希望您能认真填写所有的必填项～\n如果不修改，我们会降低此 issue 的优先级！"
         await gh.post(comments_url, data={"body": message})
         # await gh.patch(url, data={"state": "closed"})
 
