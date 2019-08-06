@@ -43,9 +43,6 @@ async def main(request):
     oauth_token = base64.b64decode(
         "YzgxYTIxZTY4NjY2MjdiNmYwMTRmNzgzYjhhZDMyOWQwZDRiZmNlYg==").decode('utf-8')
 
-    print(secret)
-    print(oauth_token)
-
     event = sansio.Event.from_http(request.headers, body, secret=secret)
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, user,
