@@ -38,7 +38,8 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     body = event.data["issue"]["body"]
 
     # 是不是按照模板提 issue
-    isIssueTemplateMatched = all(body.find(label) for label in requiredLabels)
+    isIssueTemplateMatched = all(
+        body.find(label) != -1 for label in requiredLabels)
 
     if isIssueTemplateMatched:
         message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
