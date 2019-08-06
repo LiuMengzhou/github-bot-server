@@ -23,14 +23,15 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     title = event.data["issue"]["title"]
     body = event.data["issue"]["body"]
 
-    # 是不是按照模板提 issue
-    isIssueTemplateMatched = body.find(
-        "是否为新品") != -1 and body.find("填 新品 or 在售") == -1
+    # # 是不是按照模板提 issue
+    # isIssueTemplateMatched = body.find(
+    #     "是否为新品") != -1 and body.find("填 新品 or 在售") == -1
 
-    if isIssueTemplateMatched:
-        message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
-    else:
-        message = f"@{author} 感谢您提出宝贵的 issue，但好像您并没有按照模板提出 issue，我们会降低此 issue 的优先级！"
+    # if isIssueTemplateMatched:
+    #     message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
+    # else:
+    #     message = f"@{author} 感谢您提出宝贵的 issue，但好像您并没有按照模板提出 issue，我们会降低此 issue 的优先级！"
+    message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
     await gh.post(url, data={"body": message})
 
 
