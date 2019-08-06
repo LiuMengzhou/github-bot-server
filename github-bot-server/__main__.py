@@ -9,6 +9,8 @@ routes = web.RouteTableDef()
 
 router = routing.Router()
 
+user = "LiuMengzhou"
+
 
 @router.register("issues", action="opened")
 async def issue_opened_event(event, gh, *args, **kwargs):
@@ -17,8 +19,11 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     """
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
+    title = event.data["issue"]["title"]
+    body = event.data["issue"]["body"]
 
-    message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
+    # message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
+    message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！\ntitle: @{title}\nbody: @{body}"
     await gh.post(url, data={"body": message})
 
 
@@ -31,7 +36,7 @@ async def main(request):
 
     event = sansio.Event.from_http(request.headers, body, secret=secret)
     async with aiohttp.ClientSession() as session:
-        gh = gh_aiohttp.GitHubAPI(session, "LiuMengzhou",
+        gh = gh_aiohttp.GitHubAPI(session, user,
                                   oauth_token=oauth_token)
         await router.dispatch(event, gh)
     return web.Response(status=200)
