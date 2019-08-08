@@ -19,12 +19,13 @@ oauth_token = base64.b64decode(
     "YWE5ZGNmMGYzMWQ2ZDI5NzZiNmMzMjQwMGIzMWFjNzk4YjY0MzEyNg==").decode("utf-8")
 # 模板必需填写的字段
 requiredLabels = [
-    "是否为新品（必填）",
-    "项目ID（必填）",
-    "企业名称（必填）",
-    "环境（必填）",
-    "现象（必填）",
-    "期望（必填）"
+    "是否为新品",
+    "项目ID",
+    "用户ID",
+    "企业名称",
+    "环境",
+    "现象",
+    "期望"
 ]
 
 # 开发者新建 issue
@@ -36,17 +37,21 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     author = event.data["issue"]["user"]["login"]
     title = event.data["issue"]["title"]
     body = event.data["issue"]["body"]
+    print(f"用户: {author}, issue 地址: {url}")
+
+    missLabels = []
+    for label in requiredLabels:
+        if (body.find(label) == -1):
+            missLabels.append(label)
 
     # 是不是按照模板提 issue
-    isIssueTemplateMatched = all(
-        body.find(label) != -1 for label in requiredLabels)
-
-    if isIssueTemplateMatched:
+    if len(missLabels) == 0:
         message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
         await gh.post(comments_url, data={"body": message})
     else:
-        message = f"@{author} 感谢您提出宝贵的 issue\n但好像您并没有按照模板提出 issue，希望您能认真填写所有的必填项～\n如果不修改，我们会降低此 issue 的优先级！"
+        message = f"@{author} 感谢您提出宝贵的 issue，但好像您并没有按照模板提出 issue～\n{missLabels}这些必填项希望您能认真填写～\n如果不修改，我们会降低此 issue 的优先级！"
         await gh.post(comments_url, data={"body": message})
+        print(f"没有填写的项: {missLabels}")
         # await gh.patch(url, data={"state": "closed"})
 
 
