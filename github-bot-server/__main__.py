@@ -20,8 +20,8 @@ oauth_token = base64.b64decode(
 # 模板必需填写的字段
 requiredLabels = [
     "是否为新品",
-    "项目ID",
-    "用户ID",
+    # "项目ID",
+    # "用户ID",
     "企业名称",
     "环境",
     "现象",
