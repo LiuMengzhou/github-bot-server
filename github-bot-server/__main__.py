@@ -46,7 +46,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
     # 是不是按照模板提 issue
     if len(missLabels) == 0:
-        message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！"
+        message = f"@{author} 感谢您提出宝贵的 issue，我会通知开发尽快处理！以后推荐您到开发者平台[提工单](https://iot.mi.com/fe-op/personalCenter/feedback)，有助于我们更加规范地管理问题，谢谢！"
         await gh.post(comments_url, data={"body": message})
     else:
         message = f"@{author} 感谢您提出宝贵的 issue，但好像您并没有按照模板提出 issue～\n{missLabels}这些必填项希望您能认真填写～\n如果不修改，我们会降低此 issue 的优先级！"
