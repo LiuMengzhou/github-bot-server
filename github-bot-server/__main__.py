@@ -39,7 +39,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     body = event.data["issue"]["body"]
     print(f"用户: {author}, issue 地址: {url}")
 
-    message = f"@{author} 感谢您提出宝贵的 issue，但是github issue机制已被废弃，请去小米开发者平台的[工单系统](https://iot.mi.com/fe-op/personalCenter/feedback)提工单。这个 issue 将被关闭，谢谢您的配合！"
+    message = f"Github issue机制已被废弃，请去小米开发者平台的[工单系统](https://iot.mi.com/fe-op/personalCenter/feedback)提工单。这个 issue 将被关闭，谢谢您的配合！"
     await gh.post(comments_url, data={"body": message})
     await gh.patch(url, data={"state": "closed"})
 
